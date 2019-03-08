@@ -1,0 +1,16 @@
+*.o
+.idea/
+CMakeLists.txt
+cmake-build-debug/
+*.a
+libft_tests.c
+test.c
+test.h
+test.sh
+a.out
+.vscode/
+libft.a
+ft_ls
+*.dSYM/
+minishell
+ft_ssl
