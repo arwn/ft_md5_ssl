@@ -1,10 +1,14 @@
 NAME=ft_ssl
 CFLAGS=-Wall -Werror -Wextra -I. -Ilibft
+LDFLAGS=-L libft/ -lft
 OBJ=$(subst .c,.o,$(wildcard *.c))
 
 $(NAME): $(OBJ)
 
-all: $(NAME)
+lft:
+	make -C libft
+
+all: lft $(NAME)
 	make -C libft
 
 clean:

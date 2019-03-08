@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ssl.c                                           :+:      :+:    :+:   */
+/*   md5.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/08 13:08:49 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/08 13:24:09 by zfaria           ###   ########.fr       */
+/*   Created: 2019/03/08 13:09:23 by zfaria            #+#    #+#             */
+/*   Updated: 2019/03/08 13:24:28 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <md5.h>
+#ifndef MD5_H
+# define MD5_H
 
-const char *g_usage = "usage: ft_ssl command [opts] [args]";
+#include <stdlib.h>
 
-int main(void)
-{
-	md5("Message");
-}
+void	md5(char *bytes);
+
+#endif
