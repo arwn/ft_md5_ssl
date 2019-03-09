@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   md5.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 13:09:16 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/08 16:51:42 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/08 17:04:38 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void		md5(const uint8_t *initial_msg, size_t initial_len, uint8_t *digest)
 		q.b0 += q.b;
 		q.c0 += q.c;
 		q.d0 += q.d;
-		q.offset += (512 / 8);
+		q.offset += 64;
 	}
 	free(q.done);
 	to_bytes(q.a0, digest);
