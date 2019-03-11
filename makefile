@@ -18,3 +18,6 @@ fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
+
+norm:
+	@norminette *.c *.h | grep -iv "warning"
