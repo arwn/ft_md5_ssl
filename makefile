@@ -1,5 +1,5 @@
 NAME=ft_ssl
-CFLAGS=-Wall -Werror -Wextra -I. -Ilibft
+CFLAGS=-Wall -Werror -Wextra -I. -Ilibft -g
 LDFLAGS=-L libft/ -lft
 OBJ=$(subst .c,.o,$(wildcard *.c))
 
