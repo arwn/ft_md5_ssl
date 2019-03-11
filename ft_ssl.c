@@ -6,12 +6,13 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 13:08:49 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/08 17:03:13 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/11 09:58:04 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <md5.h>
+#include <ft_ssl.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -33,7 +34,7 @@ int main(int argc, char **argv) {
  
     md5((uint8_t*)msg, len, result);
     for (i = 0; i < 16; i++)
-        printf("%2.2x", result[i]);
+        printf("%s", to_hex(result[i]));
     puts("");
  
     return 0;
