@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/12 14:07:18 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/12 15:55:25 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,66 +21,75 @@
 #include <ft_ssl.h>
 #include <libft.h>
 
-#define MD5_SIZE		16
-#define BUFF_SIZE 64
-#define MD5_STR_LEN		(MD5_SIZE * 2)
+int		g_r = 0;
+int		g_q = 0;
 
-#define PCR {perror("read"); close(fd); return (-1);}
-#define PR {perror("open"); return (-1);}
-
-int			compute_string_md5(
-uint8_t *dest_str,
-uint32_t dest_len,
-char *md5_str)
+void	print_str(char *str, char *src)
 {
-	int				i;
-	unsigned char	md5_value[MD5_SIZE];
-	t_md5_ctx		md5;
-
-	md5_init(&md5);
-	md5_update(&md5, dest_str, dest_len);
-	md5_final(&md5, md5_value);
-	i = -1;
-	while (++i < MD5_SIZE)
-		md5_str = ft_strcat(md5_str, to_hex(md5_value[i]));
-	return (0);
-}
-
-int			compute_file_md5(const char *file_path, char *md5_str, int i)
-{
-	int				fd;
-	int				ret;
-	unsigned char	data[BUFF_SIZE];
-	unsigned char	md5_value[MD5_SIZE];
-	t_md5_ctx		md5;
-
-	fd = open(file_path, O_RDONLY);
-	if (-1 == fd)
-		PR;
-	md5_init(&md5);
-	while (1)
+	if (g_q)
 	{
-		ret = read(fd, data, BUFF_SIZE);
-		if (-1 == ret)
-			PCR;
-		md5_update(&md5, data, ret);
-		if (0 == ret || ret < BUFF_SIZE)
-			break ;
+		ft_printf("%s\n", str);
 	}
-	close(fd);
-	md5_final(&md5, md5_value);
-	while (++i < MD5_SIZE)
-		md5_str = ft_strcat(md5_str, to_hex(md5_value[i]));
-	return (0);
+	else if (g_r)
+	{
+		ft_printf("%s \"%s\"\n", str, src);
+	}
+	else
+	{
+		if (g_optopt == 's')
+			ft_printf("MD5 (\"%s\") = %s\n", src, str);
+		else
+			ft_printf("MD5 (%s) = %s\n", src, str);
+	}
 }
 
-int			main(int argc, char *argv[])
+void	parse_args(int argc, char **argv)
 {
-	int		ret;
-	char	md5_str[MD5_STR_LEN + 1];
+	int		i;
+	char	str[33];
 
-	(void)argc;
-	(void)argv;
-	ret = compute_file_md5(argv[1], md5_str, -1);
-	ft_printf("[file - %s] md5 value: %s\n", argv[1], md5_str);
+	ft_bzero(str, 33);
+	while (ft_getopt(argc - 1, argv + 1, "qrs:") != -1)
+	{
+		if (g_optopt == 'q')
+			g_q = 1;
+		if (g_optopt == 'r')
+			g_r = 1;
+		if (g_optopt == 's')
+		{
+			compute_string_md5((uint8_t*)g_optarg, ft_strlen(g_optarg), str);
+			print_str(str, g_optarg);
+		}
+		ft_bzero(str, 33);	
+	}
+	i = g_optind;
+	while (++i < argc)
+	{
+		compute_file_md5(argv[i], str, -1);
+		print_str(str, argv[i]);
+	}
+}
+
+int		main(int argc, char **argv)
+{
+	char *usage = "usage: ft_ssl [md5|sha256] [opts] [args]\n";
+	if (argc < 2)
+	{
+		ft_printf("%s", usage);
+	}
+	else
+	{
+		if (ft_strequ(argv[1], "md5"))
+		{
+			parse_args(argc, argv);
+		}
+		else if (ft_strequ(argv[1], "sha256"))
+		{
+			parse_args(argc, argv);
+		}
+		else
+		{
+			ft_printf("%s", usage);
+		}
+	}
 }
