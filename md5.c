@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   md5.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:09:45 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/12 13:33:05 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/12 13:41:01 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ unsigned char g_padding[] =
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-void	md5_init(MD5_CTX *context)
+void	md5_init(t_md5_ctx *context)
 {
 	context->count[0] = 0;
 	context->count[1] = 0;
@@ -32,7 +32,7 @@ void	md5_init(MD5_CTX *context)
 	context->state[3] = 0x10325476;
 }
 
-void	md5_update(MD5_CTX *context, uint8_t *input, uint32_t inputlen)
+void	md5_update(t_md5_ctx *context, uint8_t *input, uint32_t inputlen)
 {
 	unsigned int i;
 	unsigned int index;
@@ -61,7 +61,7 @@ void	md5_update(MD5_CTX *context, uint8_t *input, uint32_t inputlen)
 	ft_memcpy(&context->buffer[index], &input[i], inputlen - i);
 }
 
-void	md5_final(MD5_CTX *context, uint8_t digest[16])
+void	md5_final(t_md5_ctx *context, uint8_t digest[16])
 {
 	unsigned int	index;
 	unsigned int	padlen;

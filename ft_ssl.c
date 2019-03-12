@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ssl.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/12 13:13:36 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/12 13:41:19 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char *md5_str)
 {
 	int				i;
 	unsigned char	md5_value[MD5_SIZE];
-	MD5_CTX			md5;
+	t_md5_ctx		md5;
 
 	md5_init(&md5);
 	md5_update(&md5, dest_str, dest_len);
@@ -50,7 +50,7 @@ int			compute_file_md5(const char *file_path, char *md5_str, int i)
 	int				ret;
 	unsigned char	data[READ_DATA_SIZE];
 	unsigned char	md5_value[MD5_SIZE];
-	MD5_CTX			md5;
+	t_md5_ctx		md5;
 
 	fd = open(file_path, O_RDONLY);
 	if (-1 == fd)

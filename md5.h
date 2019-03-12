@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   md5.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 13:09:23 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/12 13:39:30 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/12 13:44:34 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MD5_H
 # define MD5_H
 
-typedef struct
+typedef struct		s_md5_ctx
 {
 	unsigned int	count[2];
 	unsigned int	state[4];
@@ -98,15 +98,10 @@ typedef struct
 # define FUN I15;
 
 void				md5_init(t_md5_ctx *context);
-void				md5_update(t_md5_ctx *context,
-unsigned char *input, unsigned int inputlen);
-void				md5_final(t_md5_ctx *context,
-unsigned char digest[16]);
-void				md5_transform(unsigned int state[4],
-unsigned char block[64]);
-void				md5_encode(unsigned char *output,
-unsigned int *input, unsigned int len);
-void				md5_decode(unsigned int *output,
-unsigned char *input, unsigned int len);
+void				md5_update(t_md5_ctx *a, uint8_t *b, uint32_t c);
+void				md5_final(t_md5_ctx *context, uint8_t digest[16]);
+void				md5_transform(uint32_t state[4], uint8_t block[64]);
+void				md5_encode(uint8_t *o, uint32_t *i, uint32_t len);
+void				md5_decode(uint32_t *o, uint8_t *input, uint32_t len);
 
 #endif
