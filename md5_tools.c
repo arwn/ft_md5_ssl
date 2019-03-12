@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 14:12:01 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/12 14:17:15 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/12 15:58:53 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ int			compute_file_md5(const char *file_path, char *md5_str, int i)
 
 	fd = open(file_path, O_RDONLY);
 	if (-1 == fd)
-		return(die(fd));
+		return (die(fd));
 	md5_init(&md5);
 	while (1)
 	{
 		ret = read(fd, data, BUFF_SIZE);
 		if (-1 == ret)
-			return(die(fd));
+			return (die(fd));
 		md5_update(&md5, data, ret);
 		if (0 == ret || ret < BUFF_SIZE)
 			break ;

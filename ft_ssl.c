@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/12 15:55:25 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/12 15:59:42 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	parse_args(int argc, char **argv)
 			compute_string_md5((uint8_t*)g_optarg, ft_strlen(g_optarg), str);
 			print_str(str, g_optarg);
 		}
-		ft_bzero(str, 33);	
+		ft_bzero(str, 33);
 	}
 	i = g_optind;
 	while (++i < argc)
@@ -72,7 +72,9 @@ void	parse_args(int argc, char **argv)
 
 int		main(int argc, char **argv)
 {
-	char *usage = "usage: ft_ssl [md5|sha256] [opts] [args]\n";
+	char *usage;
+
+	usage = "usage: ft_ssl [md5|sha256] [opts] [args]\n";
 	if (argc < 2)
 	{
 		ft_printf("%s", usage);
