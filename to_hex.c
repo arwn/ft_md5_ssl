@@ -1,20 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ssl.h                                           :+:      :+:    :+:   */
+/*   to_hex.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/08 13:19:46 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/12 14:03:04 by zfaria           ###   ########.fr       */
+/*   Created: 2019/03/11 09:43:20 by zfaria            #+#    #+#             */
+/*   Updated: 2019/03/12 14:07:54 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_SSL_H
-# define FT_SSL_H
+#include <stdlib.h>
+#include <libft.h>
 
-# include <stdlib.h>
+static char *g_ch = "0123456789abcdef";
 
-char	*to_hex(int num);
+uint8_t	*to_hex(int num)
+{
+	int			i;
+	uint8_t		*res;
 
-#endif
+	res = ft_memalloc(3);
+	i = 0;
+	while (num > 0)
+	{
+		res[i] = g_ch[num % 16];
+		num /= 16;
+		i++;
+	}
+	if (i == 1)
+		res[1] = '0';
+	ft_strrev(res);
+	return (res);
+}

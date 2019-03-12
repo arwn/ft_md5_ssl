@@ -6,12 +6,14 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 13:09:23 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/12 13:44:34 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/12 13:58:21 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MD5_H
 # define MD5_H
+
+# include <stdlib.h>
 
 typedef struct		s_md5_ctx
 {
