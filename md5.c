@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   md5.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:09:45 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/12 12:10:33 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/12 12:34:50 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "md5.h"
-#include <memory.h>
+#include <libft.h>
 
 unsigned char PADDING[] =
 {
@@ -21,7 +21,7 @@ unsigned char PADDING[] =
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
-void MD5Init(MD5_CTX *context)
+void md5_init(MD5_CTX *context)
 {
 	context->count[0] = 0;
 	context->count[1] = 0;
@@ -31,7 +31,7 @@ void MD5Init(MD5_CTX *context)
 	context->state[3] = 0x10325476;
 }
 
-void MD5Update(MD5_CTX *context, unsigned char *input, unsigned int inputlen)
+void md5_update(MD5_CTX *context, unsigned char *input, unsigned int inputlen)
 {
 	unsigned int i = 0;
 	unsigned int index = 0;
@@ -47,35 +47,33 @@ void MD5Update(MD5_CTX *context, unsigned char *input, unsigned int inputlen)
 
 	if(inputlen >= partlen)
 	{
-		memcpy(&context->buffer[index], input,partlen);
-		MD5Transform(context->state, context->buffer);
+		ft_memcpy(&context->buffer[index], input,partlen);
+		md5_transform(context->state, context->buffer);
 
 		for(i = partlen; i+64 <= inputlen; i+=64)
-			MD5Transform(context->state, &input[i]);
+			md5_transform(context->state, &input[i]);
 
 		index = 0;        
 	}  
 	else
-	{
 		i = 0;
-	}
-	memcpy(&context->buffer[index], &input[i], inputlen-i);
+	ft_memcpy(&context->buffer[index], &input[i], inputlen-i);
 }
 
-void MD5Final(MD5_CTX *context, unsigned char digest[16])
+void md5_final(MD5_CTX *context, unsigned char digest[16])
 {
 	unsigned int index = 0,padlen = 0;
 	unsigned char bits[8];
 
 	index = (context->count[0] >> 3) & 0x3F;
 	padlen = (index < 56)?(56-index):(120-index);
-	MD5Encode(bits, context->count, 8);
-	MD5Update(context, PADDING, padlen);
-	MD5Update(context, bits, 8);
-	MD5Encode(digest, context->state, 16);
+	md5_encode(bits, context->count, 8);
+	md5_update(context, PADDING, padlen);
+	md5_update(context, bits, 8);
+	md5_encode(digest, context->state, 16);
 }
 
-void MD5Encode(unsigned char *output,unsigned int *input,unsigned int len)
+void md5_encode(unsigned char *output,unsigned int *input,unsigned int len)
 {
 	unsigned int i = 0;
 	unsigned int j = 0;
@@ -91,7 +89,7 @@ void MD5Encode(unsigned char *output,unsigned int *input,unsigned int len)
 	}
 }
 
-void MD5Decode(unsigned int *output, unsigned char *input, unsigned int len)
+void md5_decode(unsigned int *output, unsigned char *input, unsigned int len)
 {
 	unsigned int i = 0;
 	unsigned int j = 0;
@@ -107,7 +105,7 @@ void MD5Decode(unsigned int *output, unsigned char *input, unsigned int len)
 	}
 }
 
-void MD5Transform(unsigned int state[4], unsigned char block[64])
+void md5_transform(unsigned int state[4], unsigned char block[64])
 {
 	unsigned int a = state[0];
 	unsigned int b = state[1];
@@ -115,7 +113,7 @@ void MD5Transform(unsigned int state[4], unsigned char block[64])
 	unsigned int d = state[3];
 	unsigned int x[64];
 
-	MD5Decode(x,block,64);
+	md5_decode(x,block,64);
 
 	FF(a, b, c, d, x[ 0], 7, 0xd76aa478); /* 1 */
 	FF(d, a, b, c, x[ 1], 12, 0xe8c7b756); /* 2 */

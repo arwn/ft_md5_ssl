@@ -44,11 +44,11 @@ int Compute_string_md5(unsigned char *dest_str, unsigned int dest_len, char *md5
 	MD5_CTX md5;
 
 	// init md5
-	MD5Init(&md5);
+	md5_init(&md5);
 
-	MD5Update(&md5, dest_str, dest_len);
+	md5_update(&md5, dest_str, dest_len);
 
-	MD5Final(&md5, md5_value);
+	md5_final(&md5, md5_value);
 
 	// convert md5 value to md5 string
 	for(i = 0; i < MD5_SIZE; i++)
@@ -82,7 +82,7 @@ int Compute_file_md5(const char *file_path, char *md5_str)
 	}
 
 	// init md5
-	MD5Init(&md5);
+	md5_init(&md5);
 
 	while (1)
 	{
@@ -94,7 +94,7 @@ int Compute_file_md5(const char *file_path, char *md5_str)
 			return -1;
 		}
 
-		MD5Update(&md5, data, ret);
+		md5_update(&md5, data, ret);
 
 		if (0 == ret || ret < READ_DATA_SIZE)
 		{
@@ -104,7 +104,7 @@ int Compute_file_md5(const char *file_path, char *md5_str)
 
 	close(fd);
 
-	MD5Final(&md5, md5_value);
+	md5_final(&md5, md5_value);
 
 	// convert md5 value to md5 string
 	for(i = 0; i < MD5_SIZE; i++)

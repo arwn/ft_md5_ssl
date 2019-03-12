@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   md5.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 13:09:23 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/12 12:10:14 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/12 12:34:37 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ typedef struct
 	a = ROTATE_LEFT(a,s); \
 	a += b; \
 }                                            
-void MD5Init(MD5_CTX *context);
-void MD5Update(MD5_CTX *context, unsigned char *input, unsigned int inputlen);
-void MD5Final(MD5_CTX *context, unsigned char digest[16]);
-void MD5Transform(unsigned int state[4], unsigned char block[64]);
-void MD5Encode(unsigned char *output, unsigned int *input, unsigned int len);
-void MD5Decode(unsigned int *output, unsigned char *input, unsigned int len);
+void md5_init(MD5_CTX *context);
+void md5_update(MD5_CTX *context, unsigned char *input, unsigned int inputlen);
+void md5_final(MD5_CTX *context, unsigned char digest[16]);
+void md5_transform(unsigned int state[4], unsigned char block[64]);
+void md5_encode(unsigned char *output, unsigned int *input, unsigned int len);
+void md5_decode(unsigned int *output, unsigned char *input, unsigned int len);
 
 #endif
 
