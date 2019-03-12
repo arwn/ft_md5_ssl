@@ -1,67 +1,116 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_ssl.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/08 13:08:49 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/11 11:44:23 by zfaria           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "md5.h"
 
 #include <stdio.h>
-#include <md5.h>
-#include <ft_ssl.h>
 #include <stdlib.h>
 #include <string.h>
-#include <libft.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
-const char *g_usage = "usage: ft_ssl command [opts] [args]";
+#define READ_DATA_SIZE	1024
+#define MD5_SIZE		16
+#define MD5_STR_LEN		(MD5_SIZE * 2)
 
-int		g_quiet;
-int		g_string;
-char	*g_strings;
-int		g_command;
-char	*g_commands;
+// function declare
+int Compute_string_md5(unsigned char *dest_str, unsigned int dest_len, char *md5_str);
+int Compute_file_md5(const char *file_path, char *md5_str);
 
-void	parse_flags(int argc, char **argv)
+/************** main test **************/
+int main(int argc, char *argv[])
 {
-	while (ft_getopt(argc, argv, "qs:c:") != -1)
-	{
-		if (g_optopt == 'q')
-			g_quiet = 1;
-		if (g_optopt == 's')
-		{
-			g_string = 1;
-			g_strings = g_optarg;
-		}
-		if (g_optopt == 'c')
-		{
-			g_command = 1;
-			g_commands = g_optarg;
-		}
-	}
+	(void)argc; (void)argv;
+	int ret;
+	char md5_str[MD5_STR_LEN + 1];
+
+/* read file */
+	ret = Compute_file_md5(argv[1], md5_str);
+	printf("[file - %s] md5 value:\n", argv[1]);
+	printf("%s\n", md5_str);
+/* */
+	return 0;
 }
 
-int main(int argc, char **argv) {
-    char *msg;
-    size_t len;
-    int i;
-    uint8_t result[16];
- 
-    if (argc < 2) {
-        ft_printf("%s\n", g_usage);
-        return 1;
-    }
-	parse_flags(argc - 1, argv + 1);
-	if (g_string)
-		msg = g_strings;
-    len = ft_strlen(msg);
-    md5((uint8_t*)msg, len, result);
-    for (i = 0; i < 16; i++)
-        ft_printf("%s", to_hex(result[i]));
-    ft_printf("\n");
- 
-    return 0;
+/**
+ * compute the value of a string
+ * @param  dest_str
+ * @param  dest_len
+ * @param  md5_str
+ */
+int Compute_string_md5(unsigned char *dest_str, unsigned int dest_len, char *md5_str)
+{
+	int i;
+	unsigned char md5_value[MD5_SIZE];
+	MD5_CTX md5;
+
+	// init md5
+	MD5Init(&md5);
+
+	MD5Update(&md5, dest_str, dest_len);
+
+	MD5Final(&md5, md5_value);
+
+	// convert md5 value to md5 string
+	for(i = 0; i < MD5_SIZE; i++)
+	{
+		snprintf(md5_str + i*2, 2+1, "%02x", md5_value[i]);
+	}
+
+	return 0;
+}
+
+/**
+ * compute the value of a file
+ * @param  file_path
+ * @param  md5_str
+ * @return 0: ok, -1: fail
+ */
+int Compute_file_md5(const char *file_path, char *md5_str)
+{
+	int i;
+	int fd;
+	int ret;
+	unsigned char data[READ_DATA_SIZE];
+	unsigned char md5_value[MD5_SIZE];
+	MD5_CTX md5;
+
+	fd = open(file_path, O_RDONLY);
+	if (-1 == fd)
+	{
+		perror("open");
+		return -1;
+	}
+
+	// init md5
+	MD5Init(&md5);
+
+	while (1)
+	{
+		ret = read(fd, data, READ_DATA_SIZE);
+		if (-1 == ret)
+		{
+			perror("read");
+			close(fd);
+			return -1;
+		}
+
+		MD5Update(&md5, data, ret);
+
+		if (0 == ret || ret < READ_DATA_SIZE)
+		{
+			break;
+		}
+	}
+
+	close(fd);
+
+	MD5Final(&md5, md5_value);
+
+	// convert md5 value to md5 string
+	for(i = 0; i < MD5_SIZE; i++)
+	{
+		snprintf(md5_str + i*2, 2+1, "%02x", md5_value[i]);
+	}
+
+	return 0;
 }

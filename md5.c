@@ -3,153 +3,192 @@
 /*                                                        :::      ::::::::   */
 /*   md5.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
+/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/08 13:09:16 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/08 17:04:38 by zfaria           ###   ########.fr       */
+/*   Created: 2019/03/12 12:09:45 by awindham          #+#    #+#             */
+/*   Updated: 2019/03/12 12:10:33 by awindham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <md5.h>
+#include "md5.h"
+#include <memory.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <libft.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
-
-const uint32_t g_k[64] = {
-	0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
-	0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
-	0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
-	0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
-	0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa,
-	0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
-	0x21e1cde6, 0xc33707d6, 0xf4d50d87, 0x455a14ed,
-	0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a,
-	0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c,
-	0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70,
-	0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05,
-	0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665,
-	0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039,
-	0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
-	0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
-	0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391};
-
-const uint32_t g_s[] =
-{7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
-	5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
-	4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
-	6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21};
-
-#define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
-
-void		to_bytes(uint32_t val, uint8_t *bytes)
+unsigned char PADDING[] =
 {
-	bytes[0] = (uint8_t)val;
-	bytes[1] = (uint8_t)(val >> 8);
-	bytes[2] = (uint8_t)(val >> 16);
-	bytes[3] = (uint8_t)(val >> 24);
+	0x80,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+};
+
+void MD5Init(MD5_CTX *context)
+{
+	context->count[0] = 0;
+	context->count[1] = 0;
+	context->state[0] = 0x67452301;
+	context->state[1] = 0xEFCDAB89;
+	context->state[2] = 0x98BADCFE;
+	context->state[3] = 0x10325476;
 }
 
-uint32_t	to_int32(const uint8_t *bytes)
+void MD5Update(MD5_CTX *context, unsigned char *input, unsigned int inputlen)
 {
-	return ((uint32_t)bytes[0]
-	| ((uint32_t)bytes[1] << 8)
-	| ((uint32_t)bytes[2] << 16)
-	| ((uint32_t)bytes[3] << 24));
-}
+	unsigned int i = 0;
+	unsigned int index = 0;
+	unsigned int partlen = 0;
 
-/*
-** 	initial_len * 8 >> 32
-*/
+	index = (context->count[0] >> 3) & 0x3F;
+	partlen = 64 - index;
+	context->count[0] += inputlen << 3;
 
-void		md5init(const uint8_t *initial_msg, size_t initial_len, t_c *q)
-{
-	q->a0 = 0x67452301;
-	q->b0 = 0xefcdab89;
-	q->c0 = 0x98badcfe;
-	q->d0 = 0x10325476;
-	q->len = initial_len + 1;
-	while (q->len % (512 / 8) != 448 / 8)
-		q->len++;
-	q->done = (uint8_t*)malloc(q->len + 8);
-	memcpy(q->done, initial_msg, initial_len);
-	q->done[initial_len] = 0x80;
-	q->offset = initial_len + 1;
-	while (q->offset < q->len)
-		q->done[q->offset++] = 0;
-	to_bytes(initial_len * 8, q->done + q->len);
-	to_bytes(initial_len >> 29, q->done + q->len + 4);
-}
+	if(context->count[0] < (inputlen << 3))
+		context->count[1]++;
+	context->count[1] += inputlen >> 29;
 
-void		beef(t_c *q)
-{
-	int i;
-
-	i = 0;
-	while (i < 64)
+	if(inputlen >= partlen)
 	{
-		if (i < 16)
-		{
-			q->f = (q->b & q->c) | ((~q->b) & q->d);
-			q->g = i;
-		}
-		else if (i < 32)
-		{
-			q->f = (q->d & q->b) | ((~q->d) & q->c);
-			q->g = (5 * i + 1) % 16;
-		}
-		else if (i < 48)
-		{
-			q->f = q->b ^ q->c ^ q->d;
-			q->g = (3 * i + 5) % 16;
-		}
-		else
-		{
-			q->f = q->c ^ (q->b | (~q->d));
-			q->g = (7 * i) % 16;
-		}
-		q->tmp = q->d;
-		q->d = q->c;
-		q->c = q->b;
-		q->b = q->b + LEFTROTATE((q->a + q->f + g_k[i] + q->w[q->g]), g_s[i]);
-		q->a = q->tmp;
-		i++;
-	}
-}
+		memcpy(&context->buffer[index], input,partlen);
+		MD5Transform(context->state, context->buffer);
 
-void		md5(const uint8_t *initial_msg, size_t initial_len, uint8_t *digest)
-{
-	t_c q;
-	int i;
+		for(i = partlen; i+64 <= inputlen; i+=64)
+			MD5Transform(context->state, &input[i]);
 
-	md5init(initial_msg, initial_len, &q);
-	q.offset = 0;
-	while (q.offset < q.len)
+		index = 0;        
+	}  
+	else
 	{
 		i = 0;
-		while (i < 16)
-		{
-			q.w[i] = to_int32(q.done + q.offset + i * 4);
-			i++;
-		}
-		q.a = q.a0;
-		q.b = q.b0;
-		q.c = q.c0;
-		q.d = q.d0;
-		beef(&q);
-		q.a0 += q.a;
-		q.b0 += q.b;
-		q.c0 += q.c;
-		q.d0 += q.d;
-		q.offset += 64;
 	}
-	free(q.done);
-	to_bytes(q.a0, digest);
-	to_bytes(q.b0, digest + 4);
-	to_bytes(q.c0, digest + 8);
-	to_bytes(q.d0, digest + 12);
+	memcpy(&context->buffer[index], &input[i], inputlen-i);
+}
+
+void MD5Final(MD5_CTX *context, unsigned char digest[16])
+{
+	unsigned int index = 0,padlen = 0;
+	unsigned char bits[8];
+
+	index = (context->count[0] >> 3) & 0x3F;
+	padlen = (index < 56)?(56-index):(120-index);
+	MD5Encode(bits, context->count, 8);
+	MD5Update(context, PADDING, padlen);
+	MD5Update(context, bits, 8);
+	MD5Encode(digest, context->state, 16);
+}
+
+void MD5Encode(unsigned char *output,unsigned int *input,unsigned int len)
+{
+	unsigned int i = 0;
+	unsigned int j = 0;
+
+	while(j < len)
+	{
+		output[j] = input[i] & 0xFF;  
+		output[j+1] = (input[i] >> 8) & 0xFF;
+		output[j+2] = (input[i] >> 16) & 0xFF;
+		output[j+3] = (input[i] >> 24) & 0xFF;
+		i++;
+		j += 4;
+	}
+}
+
+void MD5Decode(unsigned int *output, unsigned char *input, unsigned int len)
+{
+	unsigned int i = 0;
+	unsigned int j = 0;
+
+	while(j < len)
+	{
+		output[i] = (input[j]) |
+			(input[j+1] << 8) |
+			(input[j+2] << 16) |
+			(input[j+3] << 24);
+		i++;
+		j += 4; 
+	}
+}
+
+void MD5Transform(unsigned int state[4], unsigned char block[64])
+{
+	unsigned int a = state[0];
+	unsigned int b = state[1];
+	unsigned int c = state[2];
+	unsigned int d = state[3];
+	unsigned int x[64];
+
+	MD5Decode(x,block,64);
+
+	FF(a, b, c, d, x[ 0], 7, 0xd76aa478); /* 1 */
+	FF(d, a, b, c, x[ 1], 12, 0xe8c7b756); /* 2 */
+	FF(c, d, a, b, x[ 2], 17, 0x242070db); /* 3 */
+	FF(b, c, d, a, x[ 3], 22, 0xc1bdceee); /* 4 */
+	FF(a, b, c, d, x[ 4], 7, 0xf57c0faf); /* 5 */
+	FF(d, a, b, c, x[ 5], 12, 0x4787c62a); /* 6 */
+	FF(c, d, a, b, x[ 6], 17, 0xa8304613); /* 7 */
+	FF(b, c, d, a, x[ 7], 22, 0xfd469501); /* 8 */
+	FF(a, b, c, d, x[ 8], 7, 0x698098d8); /* 9 */
+	FF(d, a, b, c, x[ 9], 12, 0x8b44f7af); /* 10 */
+	FF(c, d, a, b, x[10], 17, 0xffff5bb1); /* 11 */
+	FF(b, c, d, a, x[11], 22, 0x895cd7be); /* 12 */
+	FF(a, b, c, d, x[12], 7, 0x6b901122); /* 13 */
+	FF(d, a, b, c, x[13], 12, 0xfd987193); /* 14 */
+	FF(c, d, a, b, x[14], 17, 0xa679438e); /* 15 */
+	FF(b, c, d, a, x[15], 22, 0x49b40821); /* 16 */
+
+	/* Round 2 */
+	GG(a, b, c, d, x[ 1], 5, 0xf61e2562); /* 17 */
+	GG(d, a, b, c, x[ 6], 9, 0xc040b340); /* 18 */
+	GG(c, d, a, b, x[11], 14, 0x265e5a51); /* 19 */
+	GG(b, c, d, a, x[ 0], 20, 0xe9b6c7aa); /* 20 */
+	GG(a, b, c, d, x[ 5], 5, 0xd62f105d); /* 21 */
+	GG(d, a, b, c, x[10], 9,  0x2441453); /* 22 */
+	GG(c, d, a, b, x[15], 14, 0xd8a1e681); /* 23 */
+	GG(b, c, d, a, x[ 4], 20, 0xe7d3fbc8); /* 24 */
+	GG(a, b, c, d, x[ 9], 5, 0x21e1cde6); /* 25 */
+	GG(d, a, b, c, x[14], 9, 0xc33707d6); /* 26 */
+	GG(c, d, a, b, x[ 3], 14, 0xf4d50d87); /* 27 */
+	GG(b, c, d, a, x[ 8], 20, 0x455a14ed); /* 28 */
+	GG(a, b, c, d, x[13], 5, 0xa9e3e905); /* 29 */
+	GG(d, a, b, c, x[ 2], 9, 0xfcefa3f8); /* 30 */
+	GG(c, d, a, b, x[ 7], 14, 0x676f02d9); /* 31 */
+	GG(b, c, d, a, x[12], 20, 0x8d2a4c8a); /* 32 */
+
+	/* Round 3 */
+	HH(a, b, c, d, x[ 5], 4, 0xfffa3942); /* 33 */
+	HH(d, a, b, c, x[ 8], 11, 0x8771f681); /* 34 */
+	HH(c, d, a, b, x[11], 16, 0x6d9d6122); /* 35 */
+	HH(b, c, d, a, x[14], 23, 0xfde5380c); /* 36 */
+	HH(a, b, c, d, x[ 1], 4, 0xa4beea44); /* 37 */
+	HH(d, a, b, c, x[ 4], 11, 0x4bdecfa9); /* 38 */
+	HH(c, d, a, b, x[ 7], 16, 0xf6bb4b60); /* 39 */
+	HH(b, c, d, a, x[10], 23, 0xbebfbc70); /* 40 */
+	HH(a, b, c, d, x[13], 4, 0x289b7ec6); /* 41 */
+	HH(d, a, b, c, x[ 0], 11, 0xeaa127fa); /* 42 */
+	HH(c, d, a, b, x[ 3], 16, 0xd4ef3085); /* 43 */
+	HH(b, c, d, a, x[ 6], 23,  0x4881d05); /* 44 */
+	HH(a, b, c, d, x[ 9], 4, 0xd9d4d039); /* 45 */
+	HH(d, a, b, c, x[12], 11, 0xe6db99e5); /* 46 */
+	HH(c, d, a, b, x[15], 16, 0x1fa27cf8); /* 47 */
+	HH(b, c, d, a, x[ 2], 23, 0xc4ac5665); /* 48 */
+
+	/* Round 4 */
+	II(a, b, c, d, x[ 0], 6, 0xf4292244); /* 49 */
+	II(d, a, b, c, x[ 7], 10, 0x432aff97); /* 50 */
+	II(c, d, a, b, x[14], 15, 0xab9423a7); /* 51 */
+	II(b, c, d, a, x[ 5], 21, 0xfc93a039); /* 52 */
+	II(a, b, c, d, x[12], 6, 0x655b59c3); /* 53 */
+	II(d, a, b, c, x[ 3], 10, 0x8f0ccc92); /* 54 */
+	II(c, d, a, b, x[10], 15, 0xffeff47d); /* 55 */
+	II(b, c, d, a, x[ 1], 21, 0x85845dd1); /* 56 */
+	II(a, b, c, d, x[ 8], 6, 0x6fa87e4f); /* 57 */
+	II(d, a, b, c, x[15], 10, 0xfe2ce6e0); /* 58 */
+	II(c, d, a, b, x[ 6], 15, 0xa3014314); /* 59 */
+	II(b, c, d, a, x[13], 21, 0x4e0811a1); /* 60 */
+	II(a, b, c, d, x[ 4], 6, 0xf7537e82); /* 61 */
+	II(d, a, b, c, x[11], 10, 0xbd3af235); /* 62 */
+	II(c, d, a, b, x[ 2], 15, 0x2ad7d2bb); /* 63 */
+	II(b, c, d, a, x[ 9], 21, 0xeb86d391); /* 64 */
+	state[0] += a;
+	state[1] += b;
+	state[2] += c;
+	state[3] += d;
 }

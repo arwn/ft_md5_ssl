@@ -6,35 +6,57 @@
 /*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 13:09:23 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/08 16:43:34 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/12 12:10:14 by awindham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MD5_H
-# define MD5_H
+#define MD5_H
 
-# include <stdlib.h>
+typedef struct
+{
+	unsigned int count[2];
+	unsigned int state[4];
+	unsigned char buffer[64];   
+} MD5_CTX;
 
-typedef struct	s_context {
-	uint8_t		*done;
-	size_t		len;
-	size_t		offset;
-	uint32_t	a0;
-	uint32_t	b0;
-	uint32_t	c0;
-	uint32_t	d0;
-	uint32_t	w[16];
-	uint32_t	tmp;
-	uint32_t	a;
-	uint32_t	b;
-	uint32_t	c;
-	uint32_t	d;
-	uint32_t	i;
-	uint32_t	f;
-	uint32_t	g;
-}				t_c;
 
-void			md5(const uint8_t *initial_msg, size_t initial_len,
-	uint8_t *digest);
+#define F(x,y,z) ((x & y) | (~x & z))
+#define G(x,y,z) ((x & z) | (y & ~z))
+#define H(x,y,z) (x^y^z)
+#define I(x,y,z) (y ^ (x | ~z))
+#define ROTATE_LEFT(x,n) ((x << n) | (x >> (32-n)))
+
+#define FF(a,b,c,d,x,s,ac) \
+{ \
+	a += F(b,c,d) + x + ac; \
+	a = ROTATE_LEFT(a,s); \
+	a += b; \
+}
+#define GG(a,b,c,d,x,s,ac) \
+{ \
+	a += G(b,c,d) + x + ac; \
+	a = ROTATE_LEFT(a,s); \
+	a += b; \
+}
+#define HH(a,b,c,d,x,s,ac) \
+{ \
+	a += H(b,c,d) + x + ac; \
+	a = ROTATE_LEFT(a,s); \
+	a += b; \
+}
+#define II(a,b,c,d,x,s,ac) \
+{ \
+	a += I(b,c,d) + x + ac; \
+	a = ROTATE_LEFT(a,s); \
+	a += b; \
+}                                            
+void MD5Init(MD5_CTX *context);
+void MD5Update(MD5_CTX *context, unsigned char *input, unsigned int inputlen);
+void MD5Final(MD5_CTX *context, unsigned char digest[16]);
+void MD5Transform(unsigned int state[4], unsigned char block[64]);
+void MD5Encode(unsigned char *output, unsigned int *input, unsigned int len);
+void MD5Decode(unsigned int *output, unsigned char *input, unsigned int len);
 
 #endif
+
