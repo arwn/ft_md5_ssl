@@ -6,7 +6,7 @@
 /*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/12 12:55:46 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/12 13:13:36 by awindham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@
 #define PCR {perror("read"); close(fd); return (-1);}
 #define PR {perror("open"); return (-1);}
 
-int			compute_string_md5(dest_str, dest_len, md5_str)
-	unsigned char *dest_str;
-	unsigned int dest_len;
-	char *md5_str;
-	{
+int			compute_string_md5(
+uint8_t *dest_str,
+uint32_t dest_len,
+char *md5_str)
+{
 	int				i;
 	unsigned char	md5_value[MD5_SIZE];
 	MD5_CTX			md5;
