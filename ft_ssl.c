@@ -6,13 +6,12 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/14 15:14:53 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 15:16:40 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "md5.h"
 #include "sha256.h"
-#include "sha256_tools.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

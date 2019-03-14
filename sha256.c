@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:44:16 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/14 14:47:39 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 15:18:18 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ void	sha256_transform(t_s256q *ctx, uint8_t *d)
 	j = 0;
 	while (i < 16)
 	{
-		s.m[i] = (d[j] << 24) | (d[j + 1] << 16 )| (d[j + 2] << 8) | (d[j + 3]);
-		j+= 4;
+		s.m[i] = (d[j] << 24) | (d[j + 1] << 16) |
+			(d[j + 2] << 8) | (d[j + 3]);
+		j += 4;
 		i++;
 	}
 	while (i < 64)
@@ -74,7 +75,6 @@ void	sha256_transform(t_s256q *ctx, uint8_t *d)
 	s.f = ctx->state[5];
 	s.g = ctx->state[6];
 	s.h = ctx->state[7];
-
 	i = 0;
 	while (i < 64)
 	{
@@ -90,7 +90,6 @@ void	sha256_transform(t_s256q *ctx, uint8_t *d)
 		s.a = s.t1 + s.t2;
 		i++;
 	}
-
 	ctx->state[0] += s.a;
 	ctx->state[1] += s.b;
 	ctx->state[2] += s.c;

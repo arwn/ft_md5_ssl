@@ -6,14 +6,13 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:50:05 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/14 15:09:59 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 15:17:56 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <stdlib.h>
 #include <sha256.h>
-#include <sha256_tools.h>
 #include <ft_ssl.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -34,7 +33,7 @@ static int	die(int i, char *str)
 	}
 }
 
-int	compute_string_sha256(uint8_t *str, uint32_t len, char *res)
+int			compute_string_sha256(uint8_t *str, uint32_t len, char *res)
 {
 	t_s256q		ctx;
 	uint8_t		hash[32];
@@ -50,7 +49,7 @@ int	compute_string_sha256(uint8_t *str, uint32_t len, char *res)
 	return (0);
 }
 
-int	compute_file_sha256(char *file, char *res)
+int			compute_file_sha256(char *file, char *res)
 {
 	t_s256q	ctx;
 	int		fd;
