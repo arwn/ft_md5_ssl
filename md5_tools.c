@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 14:12:01 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/14 16:03:49 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 16:23:00 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
 
 #define MD5_SIZE 16
 #define BUFF_SIZE 64
@@ -24,13 +25,12 @@ int	die(int i, char *str)
 {
 	if (i == -1)
 	{
-		perror("open");
+		ft_printf("%s: %s: %s\n", "ft_ssl", str, strerror(errno));
 		return (-1);
 	}
 	else
 	{
-		ft_putstr("ft_ssl: ");
-		perror(str);
+		ft_printf("%s: %s: %s\n", "ft_ssl", str, strerror(errno));
 		close(i);
 		return (-1);
 	}

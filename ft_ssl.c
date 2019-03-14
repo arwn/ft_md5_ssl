@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/14 16:10:42 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 16:37:18 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ void	parse_opts(int argc, char **argv, int (*file)(char *, char *, char **),
 	int (*string)(uint8_t *str, uint32_t len, char *))
 {
 	char	str[65];
+	int		a;
 
 	ft_bzero(str, 65);
-	while (ft_getopt(argc - 1, argv + 1, "pqrs:") != -1)
+	while ((a = ft_getopt(argc - 1, argv + 1, "pqrs:")) != -1)
 	{
 		if (g_optopt == 'q')
 			g_q = 1;
@@ -65,6 +66,7 @@ void	parse_opts(int argc, char **argv, int (*file)(char *, char *, char **),
 			g_r = 1;
 		if (g_optopt == 'p')
 		{
+			g_p = 1;
 			file("/dev/fd/0", str, &g_buff);
 			ft_printf(g_buff);
 			print_str(str, 0);
@@ -77,6 +79,10 @@ void	parse_opts(int argc, char **argv, int (*file)(char *, char *, char **),
 		}
 		ft_bzero(str, 65);
 	}
+	ft_printf("%c", g_optopt);
+	if (g_optopt != 's' || g_optopt != 'c' || g_optopt != 'r' ||
+		g_optopt != 'q')
+		exit(1);
 }
 
 void	parse_args(int argc, char **argv, int (*file)(char *, char *, char **),
@@ -87,12 +93,13 @@ void	parse_args(int argc, char **argv, int (*file)(char *, char *, char **),
 
 	ft_bzero(str, 65);
 	parse_opts(argc, argv, file, string);
+	if (g_optopt == -1)
+		return ;
 	i = g_optind;
 	g_optopt = 0;
-	if (argc - 1 == i)
+	if (argc - 1 == i && g_p == 0 && g_s == 0)
 	{
 		file("/dev/fd/0", str, &g_buff);
-		ft_printf(g_buff);
 		print_str(str, 0);
 	}
 	while (++i < argc)
