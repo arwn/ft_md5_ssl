@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:09:45 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/14 13:26:17 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 13:33:30 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ void	md5_final(t_md5_ctx *context, uint8_t digest[16])
 	unsigned int	padlen;
 	unsigned char	bits[8];
 
-	index = 0;
-	padlen = 0;
 	index = (context->count[0] >> 3) & 0x3F;
 	padlen = (index < 56) ? (56 - index) : (120 - index);
 	md5_encode(bits, context->count, 8);
@@ -85,7 +83,7 @@ void	md5_encode(uint8_t *output, uint32_t *input, uint32_t len)
 	}
 }
 
-void	md5_decode(unsigned int *output, unsigned char *input, unsigned int len)
+void	md5_decode(uint32_t *output, uint8_t *input, unsigned int len)
 {
 	unsigned int i;
 	unsigned int j;
@@ -103,7 +101,7 @@ void	md5_decode(unsigned int *output, unsigned char *input, unsigned int len)
 	}
 }
 
-void	md5_transform(unsigned int state[4], unsigned char block[64])
+void	md5_transform(uint32_t state[4], uint8_t block[64])
 {
 	unsigned int a;
 	unsigned int b;
@@ -116,7 +114,7 @@ void	md5_transform(unsigned int state[4], unsigned char block[64])
 	c = state[2];
 	d = state[3];
 	md5_decode(x, block, 64);
-	FUN;
+	FUN
 	state[0] += a;
 	state[1] += b;
 	state[2] += c;
