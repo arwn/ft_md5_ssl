@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 14:12:01 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/12 15:58:53 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 13:12:52 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #define MD5_SIZE 16
 #define BUFF_SIZE 64
 
-int			die(int i)
+int	die(int i, char *str)
 {
 	if (i == -1)
 	{
@@ -29,20 +29,18 @@ int			die(int i)
 	}
 	else
 	{
-		perror("read");
+		ft_putstr("ft_ssl: ");
+		perror(str);
 		close(i);
 		return (-1);
 	}
 }
 
-int			compute_string_md5(
-uint8_t *dest_str,
-uint32_t dest_len,
-char *md5_str)
+int	compute_string_md5(uint8_t *dest_str,uint32_t dest_len, char *md5_str)
 {
-	int				i;
-	unsigned char	md5_value[MD5_SIZE];
-	t_md5_ctx		md5;
+	int			i;
+	uint8_t		md5_value[MD5_SIZE];
+	t_md5_ctx	md5;
 
 	md5_init(&md5);
 	md5_update(&md5, dest_str, dest_len);
@@ -53,7 +51,7 @@ char *md5_str)
 	return (0);
 }
 
-int			compute_file_md5(const char *file_path, char *md5_str, int i)
+int	compute_file_md5(char *file_path, char *md5_str, int i)
 {
 	int				fd;
 	int				ret;
@@ -63,13 +61,13 @@ int			compute_file_md5(const char *file_path, char *md5_str, int i)
 
 	fd = open(file_path, O_RDONLY);
 	if (-1 == fd)
-		return (die(fd));
+		return (die(fd, file_path));
 	md5_init(&md5);
 	while (1)
 	{
 		ret = read(fd, data, BUFF_SIZE);
 		if (-1 == ret)
-			return (die(fd));
+			return (die(fd, file_path));
 		md5_update(&md5, data, ret);
 		if (0 == ret || ret < BUFF_SIZE)
 			break ;

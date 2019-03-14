@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/12 15:59:42 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 13:16:01 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ void	print_str(char *str, char *src)
 	}
 	else if (g_r)
 	{
-		ft_printf("%s \"%s\"\n", str, src);
+		if (g_optopt == 's')
+			ft_printf("%s \"%s\"\n", str, src);
+		else
+			ft_printf("%s %s\n", str, src);
 	}
 	else
 	{
@@ -63,10 +66,12 @@ void	parse_args(int argc, char **argv)
 		ft_bzero(str, 33);
 	}
 	i = g_optind;
+	g_optopt = 0;
 	while (++i < argc)
 	{
-		compute_file_md5(argv[i], str, -1);
-		print_str(str, argv[i]);
+		if (compute_file_md5(argv[i], str, -1) == 0)
+			print_str(str, argv[i]);
+		ft_strclr(str);
 	}
 }
 
