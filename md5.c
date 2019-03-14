@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:09:45 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/12 13:41:01 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 13:26:17 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,6 @@ unsigned char g_padding[] =
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
-
-void	md5_init(t_md5_ctx *context)
-{
-	context->count[0] = 0;
-	context->count[1] = 0;
-	context->state[0] = 0x67452301;
-	context->state[1] = 0xEFCDAB89;
-	context->state[2] = 0x98BADCFE;
-	context->state[3] = 0x10325476;
-}
 
 void	md5_update(t_md5_ctx *context, uint8_t *input, uint32_t inputlen)
 {

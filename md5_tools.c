@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 14:12:01 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/14 13:12:52 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 13:27:02 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,18 @@ int	die(int i, char *str)
 	}
 }
 
-int	compute_string_md5(uint8_t *dest_str,uint32_t dest_len, char *md5_str)
+int	md5_init(t_md5_ctx *context)
+{
+	context->count[0] = 0;
+	context->count[1] = 0;
+	context->state[0] = 0x67452301;
+	context->state[1] = 0xEFCDAB89;
+	context->state[2] = 0x98BADCFE;
+	context->state[3] = 0x10325476;
+	return (0);
+}
+
+int	compute_string_md5(uint8_t *dest_str, uint32_t dest_len, char *md5_str)
 {
 	int			i;
 	uint8_t		md5_value[MD5_SIZE];

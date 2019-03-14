@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 13:09:23 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/12 13:58:21 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 13:26:33 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ typedef struct		s_md5_ctx
 # define I15 I14; II(b, c, d, a, x[9], 21, 0xeb86d391);
 # define FUN I15;
 
-void				md5_init(t_md5_ctx *context);
 void				md5_update(t_md5_ctx *a, uint8_t *b, uint32_t c);
 void				md5_final(t_md5_ctx *context, uint8_t digest[16]);
 void				md5_transform(uint32_t state[4], uint8_t block[64]);
