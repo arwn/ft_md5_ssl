@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 14:12:01 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/14 13:27:02 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 15:10:05 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	compute_string_md5(uint8_t *dest_str, uint32_t dest_len, char *md5_str)
 	return (0);
 }
 
-int	compute_file_md5(char *file_path, char *md5_str, int i)
+int	compute_file_md5(char *file_path, char *md5_str)
 {
 	int				fd;
 	int				ret;
@@ -85,7 +85,8 @@ int	compute_file_md5(char *file_path, char *md5_str, int i)
 	}
 	close(fd);
 	md5_final(&md5, md5_value);
-	while (++i < MD5_SIZE)
-		md5_str = ft_strcat(md5_str, to_hex(md5_value[i]));
+	fd = -1;
+	while (++fd < MD5_SIZE)
+		md5_str = ft_strcat(md5_str, to_hex(md5_value[fd]));
 	return (0);
 }

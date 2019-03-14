@@ -6,11 +6,13 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/14 13:16:01 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 15:14:53 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "md5.h"
+#include "sha256.h"
+#include "sha256_tools.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,6 +25,7 @@
 
 int		g_r = 0;
 int		g_q = 0;
+char	*g_alg;
 
 void	print_str(char *str, char *src)
 {
@@ -40,18 +43,19 @@ void	print_str(char *str, char *src)
 	else
 	{
 		if (g_optopt == 's')
-			ft_printf("MD5 (\"%s\") = %s\n", src, str);
+			ft_printf("%s (\"%s\") = %s\n", g_alg, src, str);
 		else
-			ft_printf("MD5 (%s) = %s\n", src, str);
+			ft_printf("%s (%s) = %s\n", g_alg, src, str);
 	}
 }
 
-void	parse_args(int argc, char **argv)
+void	parse_args(int argc, char **argv, int (*file)(char *, char *),
+	int (*string)(uint8_t *str, uint32_t len, char *))
 {
 	int		i;
-	char	str[33];
+	char	str[65];
 
-	ft_bzero(str, 33);
+	ft_bzero(str, 65);
 	while (ft_getopt(argc - 1, argv + 1, "qrs:") != -1)
 	{
 		if (g_optopt == 'q')
@@ -60,16 +64,16 @@ void	parse_args(int argc, char **argv)
 			g_r = 1;
 		if (g_optopt == 's')
 		{
-			compute_string_md5((uint8_t*)g_optarg, ft_strlen(g_optarg), str);
+			string((uint8_t*)g_optarg, ft_strlen(g_optarg), str);
 			print_str(str, g_optarg);
 		}
-		ft_bzero(str, 33);
+		ft_bzero(str, 65);
 	}
 	i = g_optind;
 	g_optopt = 0;
 	while (++i < argc)
 	{
-		if (compute_file_md5(argv[i], str, -1) == 0)
+		if (file(argv[i], str) == 0)
 			print_str(str, argv[i]);
 		ft_strclr(str);
 	}
@@ -88,11 +92,13 @@ int		main(int argc, char **argv)
 	{
 		if (ft_strequ(argv[1], "md5"))
 		{
-			parse_args(argc, argv);
+			g_alg = "MD5";
+			parse_args(argc, argv, compute_file_md5, compute_string_md5);
 		}
 		else if (ft_strequ(argv[1], "sha256"))
 		{
-			parse_args(argc, argv);
+			g_alg = "SHA256";
+			parse_args(argc, argv, compute_file_sha256, compute_string_sha256);
 		}
 		else
 		{
