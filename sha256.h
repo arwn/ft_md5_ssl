@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:44:24 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/14 15:18:05 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/14 15:32:32 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,8 @@ void			sha256_init(t_s256q *ctx);
 void			sha256_update(t_s256q *ctx, uint8_t *msg, uint32_t len);
 void			sha256_transform(t_s256q *ctx, uint8_t *data);
 void			sha256_final(t_s256q *ctx, uint8_t *hash);
+void			sha256_transform_1(t_sql *s, uint8_t *d);
+void			sha256_transform_2(t_sql *s);
+void			sha256_finale(t_s256q *ctx, uint8_t *hash);
 
 #endif
