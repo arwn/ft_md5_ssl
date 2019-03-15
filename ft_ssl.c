@@ -6,7 +6,7 @@
 /*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 11:30:58 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/15 11:32:01 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/15 12:00:54 by awindham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	print_str(char *str, char *src)
 			ft_printf("%s(\"%s\")= %s\n", g_alg, src, str);
 		else
 			ft_printf("%s(%s)= %s\n", g_alg, src, str);
+	if (g_d)
+		free(str);
 }
 
 void	parse_opts(int argc, char **argv, int (*file)(char *, char *, char **),
