@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 11:30:58 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/15 13:44:30 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/15 13:49:15 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,12 @@ void	print_str(char *str, char *src)
 			ft_printf("%s %s\n", str, src);
 	}
 	else
+	{
 		if (g_optopt == 's')
 			ft_printf("%s(\"%s\")= %s\n", g_alg, src, str);
 		else
 			ft_printf("%s(%s)= %s\n", g_alg, src, str);
+	}
 	if (g_d)
 		free(str);
 }

@@ -6,11 +6,11 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:09:45 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/14 13:33:30 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/15 13:50:14 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "md5.h"
+#include <md5.h>
 #include <libft.h>
 #include <stdlib.h>
 
@@ -114,7 +114,7 @@ void	md5_transform(uint32_t state[4], uint8_t block[64])
 	c = state[2];
 	d = state[3];
 	md5_decode(x, block, 64);
-	FUN
+	FUN;
 	state[0] += a;
 	state[1] += b;
 	state[2] += c;
