@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/15 11:29:55 by awindham         ###   ########.fr       */
+/*   Created: 2019/03/15 11:30:58 by awindham          #+#    #+#             */
+/*   Updated: 2019/03/15 11:32:01 by awindham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,11 @@ int		main(int argc, char **argv)
 		{
 			g_alg = "SHA256";
 			parse_args(argc, argv, compute_file_sha256, compute_string_sha256);
+		}
+		else if (ft_strequ(argv[1], "sha224"))
+		{
+			g_alg = "SHA224";
+			parse_args(argc, argv, compute_file_sha224, compute_string_sha224);
 		}
 		else
 		{
