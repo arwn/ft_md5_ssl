@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 11:30:58 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/15 12:09:17 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/15 12:30:04 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,6 @@ void	parse_opts(int argc, char **argv, int (*file)(char *, char *, char **),
 		}
 		ft_bzero(str, 65);
 	}
-	if (g_optopt != 0 && !(g_optopt == 'p' || g_optopt == 'q'
-		|| g_optopt == 'r') && g_optarg == 0)
-		exit(1);
 }
 
 void	parse_args(int argc, char **argv, int (*file)(char *, char *, char **),
@@ -92,6 +89,9 @@ void	parse_args(int argc, char **argv, int (*file)(char *, char *, char **),
 
 	ft_bzero(str, 65);
 	parse_opts(argc, argv, file, string);
+	if (g_optopt != 0 && !(g_optopt == 'p' || g_optopt == 'q'
+		|| g_optopt == 'r') && g_optarg == 0)
+		exit(1);
 	if (g_optopt == -1)
 		return ;
 	i = g_optind;
@@ -119,30 +119,18 @@ int		main(int argc, char **argv)
 		ft_printf("%s", usage);
 	else
 	{
-		if (ft_strequ(argv[1], "md5"))
-		{
-			g_alg = "MD5";
+		ft_toupperstr(argv[1]);
+		g_alg = argv[1];
+		if (ft_strequ(argv[1], "MD5"))
 			parse_args(argc, argv, compute_file_md5, compute_string_md5);
-		}
-		else if (ft_strequ(argv[1], "sha256"))
-		{
-			g_alg = "SHA256";
+		else if (ft_strequ(argv[1], "SHA256"))
 			parse_args(argc, argv, compute_file_sha256, compute_string_sha256);
-		}
-		else if (ft_strequ(argv[1], "sha224"))
-		{
-			g_alg = "SHA224";
+		else if (ft_strequ(argv[1], "SHA224"))
 			parse_args(argc, argv, compute_file_sha224, compute_string_sha224);
-		}
-		else if (ft_strequ(argv[1], "sha1"))
-		{
-			g_alg = "SHA1";
+		else if (ft_strequ(argv[1], "SHA1"))
 			parse_args(argc, argv, compute_file_sha1, compute_string_sha1);
-		}
 		else
-		{
 			ft_printf("%s", usage);
-		}
 	}
 	free(g_buff);
 }
