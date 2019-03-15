@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   md5_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 14:12:01 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/15 11:57:39 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/15 12:13:38 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,6 @@ int	md5_init(t_md5_ctx *context)
 	return (0);
 }
 
-char	*fstrcat(char *s, char *d)
-{
-	ft_strcat(s, d);
-	free(d);
-	return (s);
-}
-
 int	compute_string_md5(uint8_t *dest_str, uint32_t dest_len, char *md5_str)
 {
 	int			i;
@@ -65,11 +58,9 @@ int	compute_string_md5(uint8_t *dest_str, uint32_t dest_len, char *md5_str)
 	md5_final(&md5, md5_value);
 	i = -1;
 	while (++i < MD5_SIZE)
-		md5_str = fstrcat(md5_str, to_hex(md5_value[i]));
+		md5_str = ft_fstrcat(md5_str, to_hex(md5_value[i]));
 	return (0);
 }
-
-
 
 int	compute_file_md5(char *file_path, char *md5_str, char **buff)
 {
@@ -96,6 +87,6 @@ int	compute_file_md5(char *file_path, char *md5_str, char **buff)
 	md5_final(&md5, md5_value);
 	fd = -1;
 	while (++fd < MD5_SIZE)
-		md5_str = fstrcat(md5_str, to_hex(md5_value[fd]));
+		md5_str = ft_fstrcat(md5_str, to_hex(md5_value[fd]));
 	return (0);
 }

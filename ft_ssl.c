@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ssl.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 11:30:58 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/15 12:00:54 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/15 12:09:17 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,11 @@ int		main(int argc, char **argv)
 		{
 			g_alg = "SHA224";
 			parse_args(argc, argv, compute_file_sha224, compute_string_sha224);
+		}
+		else if (ft_strequ(argv[1], "sha1"))
+		{
+			g_alg = "SHA1";
+			parse_args(argc, argv, compute_file_sha1, compute_string_sha1);
 		}
 		else
 		{

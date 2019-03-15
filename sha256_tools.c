@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sha256_tools.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:50:05 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/15 11:42:47 by awindham         ###   ########.fr       */
+/*   Updated: 2019/03/15 12:14:25 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static int	die(int i, char *str)
 
 int			compute_string_sha256(uint8_t *str, uint32_t len, char *res)
 {
-	char		*tmp;
 	t_s256q		ctx;
 	uint8_t		hash[32];
 	uint32_t	i;
@@ -46,11 +45,7 @@ int			compute_string_sha256(uint8_t *str, uint32_t len, char *res)
 	i = 0;
 	ft_bzero(res, 64);
 	while (i < 32)
-	{
-		tmp = to_hex(hash[i++]);
-		ft_strcat(res, tmp);
-		free(tmp);
-	}
+		ft_fstrcat(res, to_hex(hash[i++]));
 	return (0);
 }
 
@@ -79,6 +74,6 @@ int			compute_file_sha256(char *file, char *res, char **buff)
 	close(fd);
 	bread = 0;
 	while (bread < 32)
-		ft_strcat(res, to_hex(hash[bread++]));
+		ft_fstrcat(res, to_hex(hash[bread++]));
 	return (0);
 }
