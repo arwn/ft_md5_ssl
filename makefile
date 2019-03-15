@@ -21,3 +21,6 @@ re: fclean all
 
 norm:
 	@norminette *.c *.h | grep -iv "warning"
+
+norman: norm
+	@norminette libft | grep -iv "warning"

@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/14 16:37:18 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/15 10:29:18 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,33 +55,29 @@ void	parse_opts(int argc, char **argv, int (*file)(char *, char *, char **),
 	int (*string)(uint8_t *str, uint32_t len, char *))
 {
 	char	str[65];
-	int		a;
 
 	ft_bzero(str, 65);
-	while ((a = ft_getopt(argc - 1, argv + 1, "pqrs:")) != -1)
+	while (ft_getopt(argc - 1, argv + 1, "pqrs:") != -1)
 	{
 		if (g_optopt == 'q')
 			g_q = 1;
 		if (g_optopt == 'r')
 			g_r = 1;
-		if (g_optopt == 'p')
+		if (g_optopt == 'p' && (g_p = 1))
 		{
-			g_p = 1;
 			file("/dev/fd/0", str, &g_buff);
 			ft_printf(g_buff);
 			print_str(str, 0);
 		}
-		if (g_optopt == 's')
+		if (g_optopt == 's' && (g_s = 1))
 		{
-			g_s = 1;
 			string((uint8_t*)g_optarg, ft_strlen(g_optarg), str);
 			print_str(str, g_optarg);
 		}
 		ft_bzero(str, 65);
 	}
-	ft_printf("%c", g_optopt);
-	if (g_optopt != 's' || g_optopt != 'c' || g_optopt != 'r' ||
-		g_optopt != 'q')
+	if (g_optopt != 0 && !(g_optopt == 'p' || g_optopt == 'q'
+		|| g_optopt == 'r') && g_optarg == 0)
 		exit(1);
 }
 
