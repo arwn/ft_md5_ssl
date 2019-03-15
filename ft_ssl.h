@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ssl.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
+/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 13:19:46 by zfaria            #+#    #+#             */
-/*   Updated: 2019/03/14 15:58:54 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/15 11:22:34 by awindham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,7 @@ int		compute_file_md5(char *file_path, char *md5_str, char **buf);
 
 int		compute_string_sha256(uint8_t *str, uint32_t len, char *res);
 int		compute_file_sha256(char *file, char *res, char **buf);
+
+char	*to_doge(char *hex);
 
 #endif

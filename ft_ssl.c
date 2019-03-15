@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ssl.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
+/*   By: awindham <awindham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/15 10:29:18 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/15 11:29:55 by awindham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,16 @@ int		g_r = 0;
 int		g_q = 0;
 int		g_s = 0;
 int		g_p = 0;
+int		g_d = 0;
 char	*g_buff;
 char	*g_alg;
 
 void	print_str(char *str, char *src)
 {
+	if (g_d)
+		str = to_doge(str);
 	if (g_q || src == 0)
-	{
 		ft_printf("%s\n", str);
-	}
 	else if (g_r)
 	{
 		if (g_optopt == 's')
@@ -43,12 +44,10 @@ void	print_str(char *str, char *src)
 			ft_printf("%s %s\n", str, src);
 	}
 	else
-	{
 		if (g_optopt == 's')
 			ft_printf("%s(\"%s\")= %s\n", g_alg, src, str);
 		else
 			ft_printf("%s(%s)= %s\n", g_alg, src, str);
-	}
 }
 
 void	parse_opts(int argc, char **argv, int (*file)(char *, char *, char **),
@@ -57,8 +56,10 @@ void	parse_opts(int argc, char **argv, int (*file)(char *, char *, char **),
 	char	str[65];
 
 	ft_bzero(str, 65);
-	while (ft_getopt(argc - 1, argv + 1, "pqrs:") != -1)
+	while (ft_getopt(argc - 1, argv + 1, "dpqrs:") != -1)
 	{
+		if (g_optopt == 'd')
+			g_d = 1;
 		if (g_optopt == 'q')
 			g_q = 1;
 		if (g_optopt == 'r')
