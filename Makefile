@@ -22,12 +22,12 @@ all: $(NAME)
 	@$(CC) $(CFLAGS) -o obj/$@ -c $<
 
 clean:
-	@make -C libft/ clean
-	@rm -rf obj/
+	-@make -C libft/ clean
+	-@rm -rf obj/
 
 fclean: clean
-	@make -C libft/ fclean
-	@rm -f $(NAME)
+	-@make -C libft/ fclean
+	-@rm -f $(NAME)
 
 re: fclean all
 
