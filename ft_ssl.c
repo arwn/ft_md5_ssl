@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 12:53:41 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/15 10:29:18 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/15 10:42:27 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,11 @@ int		main(int argc, char **argv)
 		{
 			g_alg = "SHA256";
 			parse_args(argc, argv, compute_file_sha256, compute_string_sha256);
+		}
+		else if (ft_strequ(argv[1], "sha224"))
+		{
+			g_alg = "SHA224";
+			parse_args(argc, argv, compute_file_sha224, compute_string_sha224);
 		}
 		else
 		{
