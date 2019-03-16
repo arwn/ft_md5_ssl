@@ -6,7 +6,7 @@
 /*   By: zfaria <zfaria@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 11:30:58 by awindham          #+#    #+#             */
-/*   Updated: 2019/03/15 13:49:15 by zfaria           ###   ########.fr       */
+/*   Updated: 2019/03/16 11:13:09 by zfaria           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	parse_args(int argc, char **argv, int (*file)(char *, char *, char **),
 	ft_bzero(str, 65);
 	parse_opts(argc, argv, file, string);
 	if (g_optopt != 0 && !(g_optopt == 'p' || g_optopt == 'q'
-		|| g_optopt == 'r') && g_optarg == 0)
+		|| g_optopt == 'r' || g_optopt == 'd') && g_optarg == 0)
 		exit(1);
 	if (g_optopt == -1)
 		return ;
